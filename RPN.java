@@ -25,7 +25,7 @@ public class RPN {
 			try {
 				String word = input.next();
 				if (word.equals("quit")) {
-					break;
+					System.exit(0); // because return doesn't work
 				} else if (word.equals("clear")) {
 					stack = new Stack();
 				} else if (word.equals("pop")) {
@@ -62,7 +62,7 @@ public class RPN {
 			} catch (DataOutOfRangeException e) {
 				System.err.println(e.getMessage());
 			} catch (InvalidMidiDataException e) {
-				System.err.println(e.getMessage());
+				System.err.println("Error! Instrument must be value between 0 and 127, inclusive.");
 			} catch (MidiUnavailableException e) {
 				System.err.println(e.getMessage());
 			}
@@ -152,12 +152,10 @@ public class RPN {
 			Integer note = arr[1];
 			Integer duration = arr[2];
 
-			System.out.println(instrument + " " + note + " " + duration);
+
 
 			if ((instrument < 0) && (instrument > 127)) {
-				throw new DataOutOfRangeException("Instrument must be value between 0 and 127, inclusive.");
-			} else {
-					System.out.println("Playing MIDI sound: duration=" + duration + ", note=" + note + ", instrument=" + instrument + "...");
+				throw new DataOutOfRangeException("Error! Instrument must be value between 0 and 127, inclusive.");
 			}
 
 			/** Courtesy of HeadFirstJava */
@@ -181,7 +179,11 @@ public class RPN {
 			MidiEvent noteOff = new MidiEvent(b, duration);
 			track.add(noteOff);
 			player.setSequence(seq);
+
+			System.out.println("Playing MIDI sound: duration=" + duration + ", note=" + note + ", instrument=" + instrument + "...");
+
 			player.start();
+
 
 		}
 	}
